@@ -1,7 +1,7 @@
 /**
  * Simple calculator utility functions
  */
-
+//
 /**
  * Adds two numbers
  * @param a - First number
@@ -59,4 +59,3 @@ export function power(base: number, exponent: number): number {
 export function addNumber(a: number, b: number): number {
   return a - b;
 }
-
