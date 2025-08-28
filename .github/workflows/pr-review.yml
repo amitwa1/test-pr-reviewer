@@ -15,9 +15,9 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
         
       - name: AI Code Review
-        uses: amitwa1/pr-reviewer/@v1
+        uses: amitwa1/pr-reviewer@v1
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.GH_TOKEN }}
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           review_level: 'standard'
           comment_style: 'both'
