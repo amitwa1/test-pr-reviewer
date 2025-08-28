@@ -26,3 +26,4 @@ jobs:
           comment_style: 'both'
           inline_severity: 'warning'
           summary_format: 'detailed'
+          request_delay: '10000'
