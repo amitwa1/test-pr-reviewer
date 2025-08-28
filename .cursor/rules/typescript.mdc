@@ -1,0 +1,32 @@
+---
+description: TypeScript coding standards
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
+---
+
+# TypeScript Rules
+
+## Type Safety
+- Always use explicit types for function parameters
+- Avoid using `any` type - use specific types instead
+- Use strict null checks
+
+## Code Style
+- Use camelCase for variables and functions
+- Use PascalCase for classes and interfaces
+- Prefer `const` over `let` when possible
+
+## Examples
+❌ Bad:
+```typescript
+function process(data) {
+  return data.map(item => item.value);
+}
+```
+
+✅ Good:
+```typescript
+function process(data: DataItem[]): string[] {
+  return data.map((item: DataItem) => item.value);
+}
+```
