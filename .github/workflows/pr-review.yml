@@ -2,12 +2,14 @@ name: PR Review
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
-  pull_request_target:
-    types: [opened, synchronize, ready_for_review]
 
 jobs:
   review:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,6 +21,7 @@ jobs:
         with:
           gh_token: ${{ secrets.GH_TOKEN }}
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          openai_model: 'gpt-5-mini'
           review_level: 'standard'
           comment_style: 'both'
           inline_severity: 'warning'
