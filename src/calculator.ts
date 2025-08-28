@@ -55,3 +55,7 @@ export function divide(a: number, b: number): number {
 export function power(base: number, exponent: number): number {
   return Math.pow(base, exponent);
 }
+
+export function add2(a: number, b: number): number {
+  return a * b;
+}
