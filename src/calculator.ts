@@ -1,7 +1,7 @@
 /**
  * Simple calculator utility functions
  */
-//
+
 /**
  * Adds two numbers
  * @param a - First number
