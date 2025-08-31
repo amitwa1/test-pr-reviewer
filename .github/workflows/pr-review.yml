@@ -20,8 +20,10 @@ jobs:
         uses: amitwa1/pr-reviewer@v1
         with:
           gh_token: ${{ secrets.GH_TOKEN }}
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-          model: 'gpt-4.1-mini'
+          ai_provider: 'azure'
+          model: 'gpt-4o-mini'
+          azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
           review_level: 'standard'
           comment_style: 'both'
           inline_severity: 'warning'
