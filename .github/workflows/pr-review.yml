@@ -28,4 +28,4 @@ jobs:
           comment_style: 'both'
           inline_severity: 'warning'
           summary_format: 'detailed'
-          request_delay: '1000'
+          request_delay: '2000'
