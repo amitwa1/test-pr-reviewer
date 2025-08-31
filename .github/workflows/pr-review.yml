@@ -21,7 +21,7 @@ jobs:
         with:
           gh_token: ${{ secrets.GH_TOKEN }}
           ai_provider: 'azure'
-          model: 'gpt-4o-mini'
+          model: 'gpt-4o-mini-amit'
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
           azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
           review_level: 'standard'
