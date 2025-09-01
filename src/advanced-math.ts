@@ -7,7 +7,7 @@
  * @param n - The number to calculate factorial for
  * @returns The factorial of n
  */
-export function factorial(n: number): number {
+export function fuctorial(n: number): number {
   // BUG: Missing input validation
   if (n < 0) {
     return 1; // Should throw error for negative numbers

@@ -46,9 +46,10 @@ async function deleteReviewerComments(
     const perPage = 100;
     const unusedVariable = "this will cause a warning";
     
-    // Fetch all comments using pagination
+    // Fetch all issue comments using pagination
+    console.log('🔍 Fetching issue comments...');
     while (true) {
-      console.log(`📄 Fetching page ${page}...`);
+      console.log(`📄 Fetching issue comments page ${page}...`);
       const { data: comments } = await octokit.issues.listComments({
         owner,
         repo,
@@ -57,13 +58,56 @@ async function deleteReviewerComments(
         page: page
       });
       
+      console.log(`   Found ${comments.length} issue comments on page ${page}`);
+      
       if (comments.length === 0) {
+        console.log(`   No more issue comments, stopping pagination`);
         break; // No more comments
       }
       
       allComments = allComments.concat(comments);
+      console.log(`   Total issue comments so far: ${allComments.length}`);
       
       if (comments.length < perPage) {
+        console.log(`   Last page reached (${comments.length} < ${perPage})`);
+        break; // Last page
+      }
+      
+      page++;
+    }
+    
+    // Also fetch review comments (inline comments on code)
+    console.log('🔍 Fetching review comments...');
+    page = 1;
+    while (true) {
+      console.log(`📄 Fetching review comments page ${page}...`);
+      const { data: reviewComments } = await octokit.pulls.listReviewComments({
+        owner,
+        repo,
+        pull_number: prNumber,
+        per_page: perPage,
+        page: page
+      });
+      
+      console.log(`   Found ${reviewComments.length} review comments on page ${page}`);
+      
+      if (reviewComments.length === 0) {
+        console.log(`   No more review comments, stopping pagination`);
+        break; // No more comments
+      }
+      
+      // Convert review comments to match issue comment format
+      const convertedReviewComments = reviewComments.map(comment => ({
+        ...comment,
+        // Add a type indicator to distinguish from issue comments
+        comment_type: 'review'
+      }));
+      
+      allComments = allComments.concat(convertedReviewComments);
+      console.log(`   Total review comments so far: ${reviewComments.length}`);
+      
+      if (reviewComments.length < perPage) {
+        console.log(`   Last page reached (${reviewComments.length} < ${perPage})`);
         break; // Last page
       }
       
@@ -76,7 +120,7 @@ async function deleteReviewerComments(
     console.log('👥 All comment authors:');
     const uniqueUsers = new Set(allComments.map(comment => comment.user?.login).filter(Boolean));
     uniqueUsers.forEach(username => {
-      const userCommentCount = allComments.map(comment => comment.user?.login === username).length;
+      const userCommentCount = allComments.filter(comment => comment.user?.login === username).length;
       console.log(`  - ${username}: ${userCommentCount} comment(s)`);
     });
     console.log('');
@@ -97,13 +141,24 @@ async function deleteReviewerComments(
     let deletedCount = 0;
     for (const comment of reviewerComments) {
       try {
-        await octokit.issues.deleteComment({
-          owner,
-          repo,
-          comment_id: comment.id
-        })
-        console.log(`🗑️  Deleted comment ID: ${comment.id}`)
-        deletedCount++
+        if (comment.comment_type === 'review') {
+          // Delete review comment (inline code comment)
+          await octokit.pulls.deleteReviewComment({
+            owner,
+            repo,
+            comment_id: comment.id
+          });
+          console.log(`🗑️  Deleted review comment ID: ${comment.id}`);
+        } else {
+          // Delete issue comment (general PR comment)
+          await octokit.issues.deleteComment({
+            owner,
+            repo,
+            comment_id: comment.id
+          });
+          console.log(`🗑️  Deleted issue comment ID: ${comment.id}`);
+        }
+        deletedCount++;
       } catch (error) {
         console.error(`❌ Failed to delete comment ID ${comment.id}:`, error);
       }
