@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "demo": "ts-node src/demo.ts",
+    "advanced-demo": "ts-node src/advanced-demo.ts",
     "build": "tsc"
   },
   "devDependencies": {
