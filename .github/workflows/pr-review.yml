@@ -1,40 +1,29 @@
 name: PR Review
 on:
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: 'Pull Request number'
-        required: true
-        type: string
   issue_comment:
     types: [created]
 
 jobs:
   review:
     runs-on: ubuntu-latest
-    # Only run if manually triggered or if comment contains '/review'
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'issue_comment' && github.event.issue.pull_request != null && contains(github.event.comment.body, '/review'))
+    # Only run if comment contains '/review' and is on a pull request
+    if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review')
     permissions:
       contents: read
       pull-requests: write
       issues: write
       actions: read
     steps:
-      - name: Debug event info
+      - name: Debug comment info
         run: |
-          echo "Event name: ${{ github.event_name }}"
           echo "Comment body: ${{ github.event.comment.body }}"
-          echo "Issue number: ${{ github.event.issue.number }}"
-          echo "Is PR: ${{ github.event.issue.pull_request != null }}"
+          echo "PR number: ${{ github.event.issue.number }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}"
           
       - name: Get PR details
         id: pr_details
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "pr_number=${{ github.event.inputs.pr_number }}" >> $GITHUB_OUTPUT
-          else
-            echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
-          fi
+          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
           
       - name: Checkout PR
         uses: actions/checkout@v4
