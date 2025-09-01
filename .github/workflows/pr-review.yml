@@ -34,7 +34,7 @@ jobs:
       - name: AI Code Review
         uses: amitwa1/pr-reviewer@v1
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
           pr_number: ${{ steps.pr_details.outputs.pr_number }}
           ai_provider: 'azure'
           model: 'gpt-4o-mini-amit'

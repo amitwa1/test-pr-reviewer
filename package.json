@@ -7,7 +7,11 @@
     "test": "jest",
     "demo": "ts-node src/demo.ts",
     "advanced-demo": "ts-node src/advanced-demo.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "delete-comments": "ts-node src/delete-comments.ts"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
