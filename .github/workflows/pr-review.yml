@@ -13,16 +13,20 @@ jobs:
   review:
     runs-on: ubuntu-latest
     # Only run if manually triggered or if comment contains '/review'
-    if: |
-      github.event_name == 'workflow_dispatch' || 
-      (github.event_name == 'issue_comment' && 
-       github.event.issue.pull_request && 
-       contains(github.event.comment.body, '/review'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'issue_comment' && github.event.issue.pull_request != null && contains(github.event.comment.body, '/review'))
     permissions:
       contents: read
       pull-requests: write
       issues: write
+      actions: read
     steps:
+      - name: Debug event info
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Comment body: ${{ github.event.comment.body }}"
+          echo "Issue number: ${{ github.event.issue.number }}"
+          echo "Is PR: ${{ github.event.issue.pull_request != null }}"
+          
       - name: Get PR details
         id: pr_details
         run: |
