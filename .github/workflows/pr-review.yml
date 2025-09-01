@@ -1,25 +1,48 @@
 name: PR Review
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request number'
+        required: true
+        type: string
+  issue_comment:
+    types: [created]
 
 jobs:
   review:
     runs-on: ubuntu-latest
+    # Only run if manually triggered or if comment contains '/review'
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'issue_comment' && 
+       github.event.issue.pull_request && 
+       contains(github.event.comment.body, '/review'))
     permissions:
       contents: read
       pull-requests: write
       issues: write
     steps:
-      - name: Checkout
+      - name: Get PR details
+        id: pr_details
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "pr_number=${{ github.event.inputs.pr_number }}" >> $GITHUB_OUTPUT
+          else
+            echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Checkout PR
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
+          ref: refs/pull/${{ steps.pr_details.outputs.pr_number }}/head
         
       - name: AI Code Review
         uses: amitwa1/pr-reviewer@v1
         with:
           gh_token: ${{ secrets.GH_TOKEN }}
+          pr_number: ${{ steps.pr_details.outputs.pr_number }}
           ai_provider: 'azure'
           model: 'gpt-4o-mini-amit'
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
