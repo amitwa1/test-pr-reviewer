@@ -40,6 +40,7 @@ jobs:
           model: 'amit-test'
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
           azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          azure_openai_api_version: '2024-05-01-preview'
           review_level: 'standard'
           comment_style: 'both'
           inline_severity: 'warning'
