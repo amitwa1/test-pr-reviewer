@@ -37,7 +37,7 @@ jobs:
           gh_token: ${{ secrets.GH_TOKEN }}
           pr_number: ${{ steps.pr_details.outputs.pr_number }}
           ai_provider: 'azure'
-          model: 'gpt-4o-mini-amit'
+          model: 'amit-test'
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
           azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
           review_level: 'standard'
