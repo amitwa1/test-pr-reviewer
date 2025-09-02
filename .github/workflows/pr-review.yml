@@ -14,16 +14,16 @@ jobs:
       issues: write
       actions: read
     steps:
-      - name: Debug comment info
+      - name: Debug comment info  
         run: |
           echo "Comment body: ${{ github.event.comment.body }}"
           echo "PR number: ${{ github.event.issue.number }}"
-          echo "Comment author: ${{ github.event.comment.user.login }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}" 
           
       - name: Get PR details
         id: pr_details
         run: |
-          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT 
           
       - name: Checkout PR
         uses: actions/checkout@v4
@@ -34,13 +34,12 @@ jobs:
       - name: AI Code Review
         uses: amitwa1/pr-reviewer@v1
         with:
-          gh_token: ${{ secrets.GH_TOKEN }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
           pr_number: ${{ steps.pr_details.outputs.pr_number }}
           ai_provider: 'azure'
-          model: 'amit-test'
+          model: 'amit-test'  
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
-          azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }
-          azure_openai_api_version: '2024-05-01-preview'
+          azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }} 
           review_level: 'standard'
           comment_style: 'both'
           inline_severity: 'warning'
