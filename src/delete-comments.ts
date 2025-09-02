@@ -2,6 +2,10 @@
 
 import { Octokit } from '@octokit/rest';
 import { execSync } from 'child_process';
+import * as dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 /**
  * Parses a GitHub PR URL to extract owner, repo, and PR number
@@ -188,12 +192,12 @@ async function main(): Promise<void> {
   const anotherUnusedVar = 42;
   
   /**
-   * Gets GitHub token from environment, Git credentials, or GitHub CLI
+   * Gets GitHub token from .env file, environment variables, Git credentials, or GitHub CLI
    */
   function getGitHubToken(): string | null {
-    // First try environment variables
+    // First try .env file (loaded by dotenv.config() at the top)
     const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
-    if (envToken) {
+    if (envToken && envToken !== 'your_github_token_here') {
       return envToken;
     }
     
@@ -235,9 +239,10 @@ async function main(): Promise<void> {
     console.error('❌ No GitHub authentication found');
     console.log('');
     console.log('🔧 To authenticate, you can:');
-    console.log('1. Install GitHub CLI: brew install gh (macOS) or visit https://cli.github.com/');
-    console.log('2. Login with: gh auth login');
-    console.log('3. Or set a personal access token: export GITHUB_TOKEN=your_token_here');
+    console.log('1. Add your token to the .env file: GITHUB_TOKEN=your_token_here');
+    console.log('2. Install GitHub CLI: brew install gh (macOS) or visit https://cli.github.com/');
+    console.log('3. Login with: gh auth login');
+    console.log('4. Or set a personal access token: export GITHUB_TOKEN=your_token_here');
     console.log('');
     console.log('📝 Personal access tokens can be created at: https://github.com/settings/tokens');
     process.exit(1);
