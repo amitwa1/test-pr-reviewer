@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     # Only run if comment contains '/review' and is on a pull request
     if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review')
+    # Only run if comment contains '/review' and is on a pull request
+    if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review')
     permissions:
       contents: read
       pull-requests: write
@@ -15,14 +17,18 @@ jobs:
       actions: read
     steps:
       - name: Debug comment info
+      - name: Debug comment info
         run: |
           echo "Comment body: ${{ github.event.comment.body }}"
+          echo "PR number: ${{ github.event.issue.number }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}"
           echo "PR number: ${{ github.event.issue.number }}"
           echo "Comment author: ${{ github.event.comment.user.login }}"
           
       - name: Get PR details
         id: pr_details
         run: |
+          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
           echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
           
       - name: Checkout PR
@@ -37,6 +43,7 @@ jobs:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
           pr_number: ${{ steps.pr_details.outputs.pr_number }}
           ai_provider: 'azure'
+          model: 'amit-test'
           model: 'amit-test'
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
           azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
