@@ -38,6 +38,7 @@ jobs:
           pr_number: ${{ steps.pr_details.outputs.pr_number }}
           ai_provider: 'azure'
           model: 'amit-test'  
+          azure_openai_real_model: 'o3-mini'
           azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
           azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }} 
           azure_openai_api_version: '2024-12-01-preview'
