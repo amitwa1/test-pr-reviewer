@@ -7,9 +7,7 @@ jobs:
   review:
     runs-on: ubuntu-latest
     # Only run if comment contains '/review' and is on a pull request
-    if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review')
-    # Only run if comment contains '/review' and is on a pull request
-    if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review')
+    if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review') 
     permissions:
       contents: read
       pull-requests: write
