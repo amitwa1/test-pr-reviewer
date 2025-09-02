@@ -1,28 +1,48 @@
 name: PR Review
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
+  issue_comment:
+    types: [created]
 
 jobs:
   review:
     runs-on: ubuntu-latest
+    # Only run if comment contains '/review' and is on a pull request
+    if: github.event.issue.pull_request != null && contains(github.event.comment.body, '/review')
     permissions:
       contents: read
       pull-requests: write
       issues: write
+      actions: read
     steps:
-      - name: Checkout
+      - name: Debug comment info
+        run: |
+          echo "Comment body: ${{ github.event.comment.body }}"
+          echo "PR number: ${{ github.event.issue.number }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}"
+          
+      - name: Get PR details
+        id: pr_details
+        run: |
+          echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          
+      - name: Checkout PR
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
+          ref: refs/pull/${{ steps.pr_details.outputs.pr_number }}/head
         
       - name: AI Code Review
         uses: amitwa1/pr-reviewer@v1
         with:
           gh_token: ${{ secrets.GH_TOKEN }}
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-          openai_model: 'gpt-5-mini'
+          pr_number: ${{ steps.pr_details.outputs.pr_number }}
+          ai_provider: 'azure'
+          model: 'amit-test'
+          azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }
+          azure_openai_api_version: '2024-05-01-preview'
           review_level: 'standard'
           comment_style: 'both'
           inline_severity: 'warning'
           summary_format: 'detailed'
+          request_delay: '1000'
