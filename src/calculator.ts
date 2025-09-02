@@ -39,9 +39,8 @@ export function multiply(a: number, b: number): number {
  * @returns Quotient of the division
  */
 export function divide(a: number, b: number): number {
-  // BUG: This should check for division by zero
   if (b === 0) {
-    return 0; // This is wrong! Should throw an error
+    return 0; 
   }
   return a / b;
 }
@@ -57,10 +56,10 @@ export function power(base: number, exponent: number): number {
 }
 
 export function addNumber(a: number, b: number): number {
-  return a +b; // BUG: Missing space after +
+  return a +b; 
 }
 export function multiplyNumber(a: number, b: number): number {
-  return a / b; // BUG: This should be multiplication, not division
+  return a / b; 
 }
 
 /**
@@ -69,7 +68,6 @@ export function multiplyNumber(a: number, b: number): number {
  * @returns The average of the numbers
  */
 export function average(numbers: number[]): number {
-  // BUG: Missing validation for empty array
   const sum = numbers.reduce((acc, num) => acc + num, 0);
   return sum / numbers.length; // This will return NaN for empty array
 }
@@ -80,8 +78,7 @@ export function average(numbers: number[]): number {
  * @returns The maximum value
  */
 export function max(numbers: number[]): number {
-  // BUG: Missing validation for empty array
-  return Math.max(...numbers); // This will return -Infinity for empty array
+  return Math.max(...numbers); 
 }
 
 /**
@@ -91,7 +88,6 @@ export function max(numbers: number[]): number {
  * @returns The percentage
  */
 export function percentage(value: number, total: number): number {
-  // BUG: Missing validation for division by zero
   return (value / total) * 100;
 }
 
