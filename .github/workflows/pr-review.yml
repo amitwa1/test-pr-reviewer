@@ -36,12 +36,11 @@ jobs:
         with:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
           pr_number: ${{ steps.pr_details.outputs.pr_number }}
-          ai_provider: 'azure'
-          model: 'amit-test'  
-          azure_openai_real_model: 'o3-mini'
-          azure_openai_api_key: ${{ secrets.AZURE_OPENAI_API_KEY }}
-          azure_openai_endpoint: ${{ secrets.AZURE_OPENAI_ENDPOINT }} 
-          azure_openai_api_version: '2024-12-01-preview'
+          ai_provider: 'bedrock'
+          model: 'anthropic.claude-sonnet-4-20250514-v1:0'
+          bedrock_region: 'us-east-1'
+          bedrock_access_key_id: ${{ secrets.BEDROCK_ACCESS_KEY_ID }}
+          bedrock_secret_access_key: ${{ secrets.BEDROCK_SECRET_ACCESS_KEY }}
           review_level: 'standard'
           comment_style: 'both'
           inline_severity: 'warning'
