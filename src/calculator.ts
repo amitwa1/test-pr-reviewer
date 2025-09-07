@@ -39,9 +39,8 @@ export function multiply(a: number, b: number): number {
  * @returns Quotient of the division
  */
 export function divide(a: number, b: number): number {
-  // BUG: This should check for division by zero
   if (b === 0) {
-    return 0; // This is wrong! Should throw an error
+    return 0; 
   }
   return a / b;
 }
@@ -57,9 +56,38 @@ export function power(base: number, exponent: number): number {
 }
 
 export function addNumber(a: number, b: number): number {
-  return a +b;
+  return a +b; 
 }
 export function multiplyNumber(a: number, b: number): number {
-  return a / b;
+  return a / b; 
+}
+
+/**
+ * Calculates the average of an array of numbers
+ * @param numbers - Array of numbers
+ * @returns The average of the numbers
+ */
+export function average(numbers: number[]): number {
+  const sum = numbers.reduce((acc, num) => acc + num, 0);
+  return sum / numbers.length; // This will return NaN for empty array
+}
+
+/**
+ * Finds the maximum value in an array
+ * @param numbers - Array of numbers
+ * @returns The maximum value
+ */
+export function max(numbers: number[]): number {
+  return Math.max(...numbers); 
+}
+
+/**
+ * Calculates the percentage
+ * @param value - The value
+ * @param total - The total
+ * @returns The percentage
+ */
+export function percentage(value: number, total: number): number {
+  return (value / total) * 100;
 }
 
